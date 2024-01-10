@@ -8,62 +8,90 @@ using NodaTime;
 
 namespace Netatmo
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Threading;
 
-    public class CredentialManager : ICredentialManager
+    public class CredentialManager 
     {
         private readonly string baseUrl;
         private readonly string clientId;
         private readonly string clientSecret;
+        private readonly string redirectUri;
         private readonly IClock clock;
 
+        // https://dev.netatmo.com/apidocumentation/oauth
+        // https://melmanm.github.io/misc/2023/02/13/article6-oauth20-authorization-in-desktop-applicaions.html
         public CredentialManager(string baseUrl, string clientId, string clientSecret, IClock clock)
         {
             this.baseUrl = baseUrl;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
             this.clock = clock;
+            this.redirectUri = "http://localhost:8888/";
         }
 
         public CredentialToken CredentialToken { get; private set; }
         public string AccessToken => CredentialToken?.AccessToken;
 
-        public async Task GenerateToken(string username, string password, Scope[] scopes = null)
+        string CreateAuthorizeRequest(string redirectUri)
         {
-            var scope = string.Join(" ", scopes?.Select(s => s.Value) ?? new string[0]);
+            var queryBuilder = new StringBuilder();
+            queryBuilder.Append("client_id=").Append(clientId);
+            queryBuilder.Append("&redirect_uri=").Append(redirectUri);
+            queryBuilder.Append("&scope=").Append("read_station");
+            queryBuilder.Append("&state=").Append("mystate");
 
+            var uriBuilder = new UriBuilder(baseUrl) { Query = queryBuilder.ToString(), Path = "oauth2/authorize" };
+
+            return uriBuilder.ToString();
+        }
+
+        public string /*async Task*/ Authorize()
+        {
+            var authorizeRequest = CreateAuthorizeRequest(redirectUri);
+
+            //start system browser 
+            Process.Start(new ProcessStartInfo(authorizeRequest) { UseShellExecute = true });
+
+            using var listener = new HttpListener();
+            listener.Prefixes.Add(redirectUri);
+            listener.Start();
+
+            //wait for server captures redirect_uri  
+            HttpListenerContext context = listener.GetContext();
+            HttpListenerRequest request = context.Request;
+
+            var code = request.QueryString.Get("code");
+
+            context.Response.Close();
+            listener.Stop();
+
+            return code;
+        }
+
+        public async Task GetAccessToken(string codeValue)
+        {
             // TODO : Handle not success status codes (rate limit exceeded, api down, ect)
             var token = await baseUrl.AppendPathSegment("/oauth2/token").PostUrlEncodedAsync(new
             {
-                grant_type = "password",
+                grant_type = "authorization_code",
                 client_id = clientId,
                 client_secret = clientSecret,
-                username,
-                password,
-                scope
+                code = codeValue,
+                redirect_uri = redirectUri,
+                scope = "read_station"
             }).ReceiveJson<Token>();
 
             CredentialToken = new CredentialToken(token, clock);
         }
-        
-        public void ProvideOAuth2Token(string accessToken, string refreshToken)
-        {
-            var appToken = new Token()
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                ExpiresIn = 20
-            };
 
-            CredentialToken = new CredentialToken(appToken, clock);
-        }
-
-        public void ProvideOAuth2Token(string accessToken)
-        {
-            ProvideOAuth2Token(accessToken, null);
-        }
-
-        public async Task RefreshToken()
+        public async Task GetRefreshToken()
         {
             // TODO : Handle not success status codes (rate limit exceeded, api down, ect)
             var token = await baseUrl.AppendPathSegment("/oauth2/token").PostUrlEncodedAsync(new

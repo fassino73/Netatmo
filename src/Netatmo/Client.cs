@@ -4,7 +4,7 @@ using NodaTime;
 
 namespace Netatmo
 {
-    public class Client : IClient
+    public class Client
     {
         public Client(IClock clock, string baseUrl, string clientId, string clientSecret)
         {
@@ -17,27 +17,17 @@ namespace Netatmo
         public IWeatherClient Weather { get; }
         public IEnergyClient Energy { get; }
         public IAirClient Air { get; }
-        public ICredentialManager CredentialManager { get; }
-
-        public Task GenerateToken(string username, string password, Scope[] scopes = null)
-        {
-            Console.WriteLine("Client credentials grant type is deprecated since october 2022 and will not work!");
-            return CredentialManager.GenerateToken(username, password, scopes);
-        }
+        public CredentialManager CredentialManager { get; }
         
-        public void ProvideOAuth2Token(string accessToken)
+        public Task Authorize()
         {
-            CredentialManager.ProvideOAuth2Token(accessToken);
-        }
-        
-        public void ProvideOAuth2Token(string accessToken, string refreshToken)
-        {
-            CredentialManager.ProvideOAuth2Token(accessToken, refreshToken);
+            string code = CredentialManager.Authorize();
+            return CredentialManager.GetAccessToken(code);
         }
 
         public Task RefreshToken()
         {
-            return CredentialManager.RefreshToken();
+            return CredentialManager.GetRefreshToken();
         }
     }
 }

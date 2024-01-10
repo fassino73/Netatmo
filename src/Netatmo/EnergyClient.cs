@@ -12,9 +12,9 @@ namespace Netatmo
     public class EnergyClient : IEnergyClient
     {
         private readonly string baseUrl;
-        private readonly ICredentialManager credentialManager;
+        private readonly CredentialManager credentialManager;
 
-        public EnergyClient(string baseUrl, ICredentialManager credentialManager)
+        public EnergyClient(string baseUrl, CredentialManager credentialManager)
         {
             this.credentialManager = credentialManager;
             this.baseUrl = baseUrl;

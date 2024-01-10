@@ -9,9 +9,9 @@ namespace Netatmo
     public class AirClient : IAirClient
     {
         private readonly string baseUrl;
-        private readonly ICredentialManager credentialManager;
+        private readonly CredentialManager credentialManager;
 
-        public AirClient(string baseUrl, ICredentialManager credentialManager)
+        public AirClient(string baseUrl, CredentialManager credentialManager)
         {
             this.baseUrl = baseUrl;
             this.credentialManager = credentialManager;

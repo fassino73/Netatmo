@@ -8,9 +8,9 @@ namespace Netatmo
     public class WeatherClient : IWeatherClient
     {
         private readonly string baseUrl;
-        private readonly ICredentialManager credentialManager;
+        private readonly CredentialManager credentialManager;
 
-        public WeatherClient(string baseUrl, ICredentialManager credentialManager)
+        public WeatherClient(string baseUrl, CredentialManager credentialManager)
         {
             this.credentialManager = credentialManager;
             this.baseUrl = baseUrl;
