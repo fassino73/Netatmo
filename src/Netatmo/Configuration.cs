@@ -1,27 +1,29 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using Flurl.Http.Configuration;
 using Netatmo.Converters;
-using Newtonsoft.Json;
 
 namespace Netatmo
 {
     public static class Configuration
     {
-        public static JsonSerializerSettings JsonSerializer()
+        public static JsonSerializerOptions JsonSerializerSettings()
         {
-            return new JsonSerializerSettings
+            return new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                Converters = new List<JsonConverter> {new TimestampToInstantConverter(), new StringToDateTimeZoneConverter()}
+                PropertyNameCaseInsensitive = true,
+                IgnoreReadOnlyProperties = true,
+                Converters =
+                {
+                    new TimestampToInstantConverter(),
+                    new StringToDateTimeZoneConverter()
+                }
             };
         }
 
         public static void ConfigureRequest(FlurlHttpSettings settings)
         {
-            var jsonSettings = JsonSerializer();
-
-            //jsonSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
-            settings.JsonSerializer = new NewtonsoftJsonSerializer(jsonSettings);
+            settings.JsonSerializer = new DefaultJsonSerializer(JsonSerializerSettings());
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Netatmo
         public Task<DataResponse<GetStationsDataBody>> GetStationsData(string deviceId = null, bool? onlyFavorites = null)
         {
             return baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/getstationsdata")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new GetStationsDataRequest

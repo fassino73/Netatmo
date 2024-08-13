@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Energy
 {
@@ -14,11 +14,11 @@ namespace Netatmo.Models.Client.Energy
             MOffset = mOffset;
         }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string ZoneId { get; set; }
 
         // offset in minutes since Monday 00:00:01
-        [JsonProperty("m_offset")]
+        [JsonPropertyName("m_offset")]
         public int MOffset { get; set; }
     }
 }

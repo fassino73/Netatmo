@@ -1,11 +1,11 @@
-using Newtonsoft.Json;
 using NodaTime;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Weather.StationsData.DashboardData
 {
     public class DashBoardData : IDashBoardData
     {
-        [JsonProperty("time_utc")]
+        [JsonPropertyName("time_utc")]
         public Instant TimeUtc { get; set; }
     }
 }

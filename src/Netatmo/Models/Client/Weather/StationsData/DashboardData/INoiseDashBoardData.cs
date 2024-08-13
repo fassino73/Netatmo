@@ -1,10 +1,11 @@
-using Newtonsoft.Json;
+
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Weather.StationsData.DashboardData
 {
     public interface INoiseDashBoardData : IDashBoardData
     {
-        [JsonProperty("Noise")]
+        [JsonPropertyName("Noise")]
         double Noise { get; set; }
     }
 }

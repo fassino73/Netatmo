@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Netatmo.Models.Client.Energy.Enums;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Energy
 {
@@ -21,16 +21,16 @@ namespace Netatmo.Models.Client.Energy
             if (rooms != null) Rooms.AddRange(rooms);
         }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public ZoneTypeEnum Type { get; set; }
 
-        [JsonProperty("rooms")]
+        [JsonPropertyName("rooms")]
         public List<Room> Rooms { get; set; }
 
         public class Room
@@ -45,10 +45,10 @@ namespace Netatmo.Models.Client.Energy
                 ThermSetPointTemperature = thermSetPointTemperature;
             }
 
-            [JsonProperty("id")]
+            [JsonPropertyName("id")]
             public string Id { get; set; }
 
-            [JsonProperty("therm_setpoint_temperature")]
+            [JsonPropertyName("therm_setpoint_temperature")]
             public double ThermSetPointTemperature { get; set; }
         }
     }

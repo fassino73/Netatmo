@@ -1,14 +1,14 @@
 using Netatmo.Models.Client.Weather.StationsData;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Weather
 {
     public class GetStationsDataBody
     {
-        [JsonProperty("devices")]
+        [JsonPropertyName("devices")]
         public Device[] Devices { get; set; }
 
-        [JsonProperty("user")]
+        [JsonPropertyName("user")]
         public User User { get; set; }
     }
 }

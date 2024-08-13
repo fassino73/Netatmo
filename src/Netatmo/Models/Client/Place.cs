@@ -1,23 +1,23 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using NodaTime;
 
 namespace Netatmo.Models.Client
 {
     public class Place
     {
-        [JsonProperty("altitude")]
+        [JsonPropertyName("altitude")]
         public double Altitude { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public string Country { get; set; }
 
-        [JsonProperty("timezone")]
+        [JsonPropertyName("timezone")]
         public DateTimeZone Timezone { get; set; }
 
-        [JsonProperty("location")]
+        [JsonPropertyName("location")]
         public double[] Location { get; set; }
     }
 }

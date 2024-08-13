@@ -1,26 +1,27 @@
 using System;
 using Netatmo.Enums;
 using Netatmo.Models.Client.Weather.StationsData.DashboardData;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using NodaTime;
+using System.Text.Json.Nodes;
 
 namespace Netatmo.Models.Client.Weather.StationsData
 {
     public class Module
     {
-        [JsonProperty("_id")]
+        [JsonPropertyName("_id")]
         public string Id { get; set; }
 
         // NAMain: Base station, NAModule1: Outdoor Module, NAModule2: Wind Gauge, NAModule3: Rain Gauge, NAModule4: Optional indoor module
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("module_name")]
+        [JsonPropertyName("module_name")]
         public string ModuleName { get; set; }
 
         // Current radio status per module. (90=low, 60=highest)
-        [JsonProperty("rf_status")]
+        [JsonPropertyName("rf_status")]
         public int RfStatus { get; set; }
 
         public RfStrengthEnum RfStrength
@@ -38,10 +39,10 @@ namespace Netatmo.Models.Client.Weather.StationsData
         }
 
         // Percentage of battery remaining (10=low)
-        [JsonProperty("battery_percent")]
+        [JsonPropertyName("battery_percent")]
         public int BatteryPercent { get; set; }
 
-        [JsonProperty("battery_vp")]
+        [JsonPropertyName("battery_vp")]
         public int BatteryVp { get; set; }
 
         public BatteryLevelEnum BatteryStatus
@@ -98,23 +99,23 @@ namespace Netatmo.Models.Client.Weather.StationsData
             }
         }
 
-        [JsonProperty("firmware")]
+        [JsonPropertyName("firmware")]
         public int Firmware { get; set; }
 
-        [JsonProperty("last_message")]
+        [JsonPropertyName("last_message")]
         public Instant LastMessageAt { get; set; }
 
-        [JsonProperty("last_seen")]
+        [JsonPropertyName("last_seen")]
         public Instant LastSeenAt { get; set; }
 
-        [JsonProperty("last_setup")]
+        [JsonPropertyName("last_setup")]
         public Instant LastSetupAt { get; set; }
 
-        [JsonProperty("data_type")]
+        [JsonPropertyName("data_type")]
         public string[] DataType { get; set; }
 
-        [JsonProperty("dashboard_data")]
-        public JObject DashboardData { get; set; }
+        [JsonPropertyName("dashboard_data")]
+        public JsonObject DashboardData { get; set; }
 
         public T GetDashboardData<T>()where T : IDashBoardData
         {
@@ -146,7 +147,7 @@ namespace Netatmo.Models.Client.Weather.StationsData
                 throw new ArgumentException($"{expectedType.Name} should be expected");
             }
             
-            return JsonConvert.DeserializeObject<T>(DashboardData.ToString(), Configuration.JsonSerializer());
+            return JsonSerializer.Deserialize<T>(DashboardData, Configuration.JsonSerializerSettings());
         }
     }
 }

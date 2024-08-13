@@ -23,7 +23,7 @@ namespace Netatmo
         public Task<DataResponse<GetHomesDataBody>> GetHomesData(string homeId = null, string gatewayTypes = null)
         {
             return baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/homesdata")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new GetHomesDataRequest
@@ -37,7 +37,7 @@ namespace Netatmo
         public async Task<DataResponse<GetHomeStatusBody>> GetHomeStatus(string homeId, string[] deviceTypes = null)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/homestatus")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new GetHomeStatusRequest
@@ -51,7 +51,7 @@ namespace Netatmo
         public async Task<DataResponse> SetThermMode(string homeId, string mode, Instant? endTime = null)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/setthermmode")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new SetThermModeRequest
@@ -65,7 +65,7 @@ namespace Netatmo
         public async Task<DataResponse> SetRoomThermPoint(string homeId, string roomId, string mode, double? temp = null, Instant? endTime = null)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/setroomthermpoint")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new SetRoomThermpointRequest
@@ -83,7 +83,7 @@ namespace Netatmo
             ValidateGetRoomMeasureParameters<T>(parameters);
 
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/getroommeasure")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new GetRoomMeasureRequest
@@ -103,7 +103,7 @@ namespace Netatmo
         public async Task<DataResponse> SwitchHomeSchedule(string homeId, string scheduleId)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/switchhomeschedule")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new SwitchHomeScheduleRequest
@@ -116,7 +116,7 @@ namespace Netatmo
         public async Task<DataResponse> RenameHomeSchedule(string homeId, string scheduleId, string name)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/renamehomeschedule")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new RenameHomeScheduleRequest
@@ -130,7 +130,7 @@ namespace Netatmo
         public async Task<DataResponse> DeleteHomeSchedule(string homeId, string scheduleId)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/deletehomeschedule")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new DeleteHomeScheduleRequest
@@ -143,7 +143,7 @@ namespace Netatmo
         public async Task<DataResponse> SyncHomeSchedule(SyncHomeScheduleRequest requestParameters)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/synchomeschedule")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(requestParameters).ReceiveJson<DataResponse>();
@@ -152,7 +152,7 @@ namespace Netatmo
         public async Task<CreateHomeScheduleResponse> CreateHomeSchedule(CreateHomeScheduleRequest requestParameters)
         {
             return await baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/createnewhomeschedule")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(requestParameters).ReceiveJson<CreateHomeScheduleResponse>();

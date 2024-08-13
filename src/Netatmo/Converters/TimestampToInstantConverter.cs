@@ -1,23 +1,20 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using NodaTime;
 
 namespace Netatmo.Converters
 {
-    public class TimestampToInstantConverter : JsonConverter<Instant?>
+    public class TimestampToInstantConverter : JsonConverter<Instant>
     {
-        public override void WriteJson(JsonWriter writer, Instant? value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, Instant value, JsonSerializerOptions serializer)
         {
-            if (value.HasValue) writer.WriteValue(value.Value.ToUnixTimeSeconds().ToString());
+            writer.WriteNumberValue(value.ToUnixTimeSeconds());
         }
 
-        public override Instant? ReadJson(JsonReader reader, Type objectType, Instant? existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
+        public override Instant Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions serializer)
         {
-            if (reader.Value == null) return null;
-            var value = long.Parse(reader.Value.ToString());
-
-            return Instant.FromUnixTimeSeconds(value);
+            return Instant.FromUnixTimeSeconds(reader.GetInt64());
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Netatmo
         public Task<DataResponse<GetHomeCoachsData>> GetHomeCoachsData(string deviceId = null)
         {
             return baseUrl
-                .ConfigureRequest(Configuration.ConfigureRequest)
+                .WithSettings(Configuration.ConfigureRequest)
                 .AppendPathSegment("/api/gethomecoachsdata")
                 .WithOAuthBearerToken(credentialManager.AccessToken)
                 .PostJsonAsync(new GetHomeCoachsDataRequest

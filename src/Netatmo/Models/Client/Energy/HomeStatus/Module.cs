@@ -1,22 +1,22 @@
 using Netatmo.Enums;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client.Energy.HomeStatus
 {
     public class Module
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
         // NATherm1 = thermostat, NRV = valve, NAPlug = relay, NACamera = welcome camera, NOC = presence camera
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("bridge")]
+        [JsonPropertyName("bridge")]
         public string Bridgereachable { get; set; }
 
         // Wifi signal quality : 56 Good, 71 Average, 86 Bad
-        [JsonProperty("wifi_strength")]
+        [JsonPropertyName("wifi_strength")]
         public int? WifiStrength { get; set; }
 
         public WifiStrengthEnum WifiStatus
@@ -34,7 +34,7 @@ namespace Netatmo.Models.Client.Energy.HomeStatus
         }
 
         // Radio signal quality : 90 = low, 80 = medium, 70 = high, 60 = full signal
-        [JsonProperty("rf_strength")]
+        [JsonPropertyName("rf_strength")]
         public int RfStrength { get; set; }
 
         public RfStrengthEnum RfStatus
@@ -52,18 +52,18 @@ namespace Netatmo.Models.Client.Energy.HomeStatus
         }
 
         // Only for NATherm1
-        [JsonProperty("connected_to_boiler")]
+        [JsonPropertyName("connected_to_boiler")]
         public bool? ConnectedToBoiler { get; set; }
 
         // Only for NATherm1
-        [JsonProperty("boiler_status")]
+        [JsonPropertyName("boiler_status")]
         public bool? BoilerStatus { get; set; }
 
         // Only for NATherm1
-        [JsonProperty("boiler_valve_comfort_boost")]
+        [JsonPropertyName("boiler_valve_comfort_boost")]
         public bool? BoilerValveComfortBoost { get; set; }
 
-        [JsonProperty("battery_level")]
+        [JsonPropertyName("battery_level")]
         public int BatteryLevel { get; set; }
 
         public BatteryLevelEnum BatteryStatus
@@ -94,20 +94,20 @@ namespace Netatmo.Models.Client.Energy.HomeStatus
             }
         }
 
-        [JsonProperty("battery_state")]
+        [JsonPropertyName("battery_state")]
         public string BatteryState { get; set; }
 
-        [JsonProperty("firmware_revision")]
+        [JsonPropertyName("firmware_revision")]
         public int FirmwareRevision { get; set; }
 
         // Only for valve type Number displayed during the pairing with the relay
-        [JsonProperty("radio_id")]
+        [JsonPropertyName("radio_id")]
         public int? RadioId { get; set; }
 
-        [JsonProperty("anticipating")]
+        [JsonPropertyName("anticipating")]
         public bool? Anticipating { get; set; }
 
-        [JsonProperty("reachable")]
+        [JsonPropertyName("reachable")]
         public bool? Reachable { get; set; }
     }
 }

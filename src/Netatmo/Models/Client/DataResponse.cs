@@ -1,23 +1,23 @@
-using Newtonsoft.Json;
 using NodaTime;
+using System.Text.Json.Serialization;
 
 namespace Netatmo.Models.Client
 {
     public class DataResponse
     {
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("time_exec")]
+        [JsonPropertyName("time_exec")]
         public double? TimeExec { get; set; }
 
-        [JsonProperty("time_server")]
+        [JsonPropertyName("time_server")]
         public Instant? TimeServer { get; set; }
     }
 
     public class DataResponse<T> : DataResponse
     {
-        [JsonProperty("body")]
+        [JsonPropertyName("body")]
         public T Body { get; set; }
     }
 }

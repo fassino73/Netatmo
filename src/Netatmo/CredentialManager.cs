@@ -8,8 +8,6 @@ using NodaTime;
 
 namespace Netatmo
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Diagnostics;
     using System.IO;
