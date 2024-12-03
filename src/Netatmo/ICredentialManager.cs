@@ -7,6 +7,8 @@ public interface ICredentialManager
     CredentialToken CredentialToken { get; }
     string AccessToken { get; }
     Task GenerateToken(string username, string password, Scope[] scopes = null);
+    public string Authorize();
+    public Task GetAccessToken(string codeValue);
     void ProvideOAuth2Token(string accessToken);
     void ProvideOAuth2Token(string accessToken, string refreshToken);
     Task RefreshToken();
